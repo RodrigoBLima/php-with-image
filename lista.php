@@ -4,6 +4,16 @@
   require_once 'database/banco.php';
 
   require_once 'layout/mensagem.php';
+
+  // adicionando conexao a variavel com os dados do banco
+  $conn = mysqli_connect($servername, $username, $password, $database);
+  if(isset($_GET['id'])):
+    $id = $_GET['id'];
+    $recebe = "SELECT * FROM produtos WHERE id = '$id'";
+    $resultado = mysqli_query($conn, $recebe);
+    $dados = mysqli_fetch_array($resultado);
+  endif;
+
 ?>
 
 
@@ -18,8 +28,10 @@
                                <th>Nome</th>
                                <th>Descrição</th>
                                <th>Imagens</th>
+                               <input type="hidden" name="id"  value="<?php echo $dados['id']; ?>">
 
                                <th>Editar</th>
+                                <th>Excluir</th>
                            </tr>
                        </thead>
 
@@ -39,6 +51,7 @@
                                <td id="imagem"><img src="img/<?php echo $dadps['imagem']; ?>" alt=""></td>
 
                                <td><a href="edita.php?id=<?php echo $dados['id']; ?>" class="btn-floating orange"><i class="material-icons">edit</i></td>
+                               <td><a href="includes/excluir.php?id=<?php echo $dados['id']; ?>" class="btn-floating red"><i class="material-icons">delete</i></td>
 
 
                            </tr>

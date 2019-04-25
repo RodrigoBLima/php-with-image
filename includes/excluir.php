@@ -17,13 +17,13 @@ require_once  '../layout/mensagem.php';
       $id = $_POST['id'];
 
 
-      $query = "UPDATE  `produtos` SET nome = '$nome', descricao = '$descricao', imagem ='$imagem' WHERE id = '$id' ";
+      $query = "DELETE FROM `produtos`  WHERE id = '$id' ";
 
       //se deu tudo certo? exibir uma mensagem de ok
       if (mysqli_query($conn, $query)) {
 
-          header('Location: ../lista.php');
-          $_SESSION['mensagem'] = "Produto atualizado com sucesso " ;
+          header('Location: ../index.php');
+          $_SESSION['mensagem'] = "Produto excluido com sucesso " ;
       } else {
         //se não deu certo exibir mensagem de erro
           echo  "<script>alert('Erro!);</script>". $query . "<br>" . mysqli_error($conn);
