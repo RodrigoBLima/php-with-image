@@ -9,7 +9,7 @@
 
         <!-- tabela para listar todos os produtos cadastrados -->
         <div class="container">
-            <hr>
+
             <h5 class="center-align">Lista de produtos cadastrados</h5>
                <div class="col s12 m6 push-m3">
                    <table class="striped">
@@ -17,7 +17,7 @@
                            <tr>
                                <th>Nome</th>
                                <th>Descrição</th>
-                               <th>Imagems</th>
+                               <th>Imagens</th>
 
                                <th>Editar</th>
                            </tr>
@@ -36,9 +36,9 @@
                            <tr>
                                <td><?php echo $dados['nome']; ?></td>
                                <td><?php echo $dados['descricao']; ?></td>
-                               <td><?php echo $dados['imagem']; ?></td>
+                               <td id="imagem"><img src="img/<?php echo $dadps['imagem']; ?>" alt=""></td>
 
-                               <td><a href="editar.php?id=<?php echo $dados['id_pet']; ?>" class="btn-floating orange"><i class="material-icons">edit</i></td>
+                               <td><a href="edita.php?id=<?php echo $dados['id']; ?>" class="btn-floating orange"><i class="material-icons">edit</i></td>
 
 
                            </tr>
@@ -47,6 +47,7 @@
                                else:
                            ?>
                             <tr>
+                               <td>-</td>
                                <td>-</td>
                                <td>-</td>
                                <td>-</td>

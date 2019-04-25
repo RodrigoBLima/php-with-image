@@ -2,6 +2,9 @@
 //iniciando sessão
 session_start();
 
+require_once  '../layout/mensagem.php';
+
+
 //fazendo requisicao do banco de dados
 @require_once '../database/banco.php';
 
@@ -9,24 +12,44 @@ session_start();
 $conn = mysqli_connect($servername, $username, $password, $database);
 
 
-//adicionando o que vem do post nas variaveis
-$nome = $_POST['nome'] =  preg_replace('/[^[:alpha:]_]/', '',$_POST['nome']);
-$descricao = $_POST['descricao'];
-$imagem  = $_POST['imagem'];
+if (isset($_POST['cadastrar'])) {
+
+      //validacao simples
+        if ( empty($_POST['nome']) ||  empty($_POST['descricao']) ||  empty($_POST['imagem']) ) {
+
+          header('Location: ../index.php');
+
+            $_SESSION['mensagem'] = "Preencha todos os campos " ;
+
+           }
+           else{
+             //adicionando o que vem do post nas variaveis
+             $nome = $_POST['nome'] =  preg_replace('/[^[:alpha:]_]/', '',$_POST['nome']);
+             $descricao = $_POST['descricao'];
+             $imagem  = $_POST['imagem'];
 
 
-//inserindo dados no banco
-$query = "INSERT INTO `produtos` (`nome`, `descricao`, `imagem`) VALUES ('$nome', '$descricao', '$imagem')";
+              //trabalhando na imagem
+              $extensao = strtolower(substr($_FILES['arquivo']['nome'], -4));
+              $nomefoto = $nome.$descricao.$extensao;
+              $diretorio = "img/";
+              move_uploaded_file($_FILES['imagem']['tmp_name'], $diretorio.$nomefoto);
 
 
-//se deu tudo certo? exibir uma mensagem de ok
-if (mysqli_query($conn, $query)) {
+              //inserindo dados no banco
+              $query = "INSERT INTO `produtos` (`nome`, `descricao`, `imagem`) VALUES ('$nome', '$descricao', '$imagem')";
 
-    header('Location: ../registrarpet.php');
-    $_SESSION['mensagem'] = "Seja bem vindo ". $nome ;
-} else {
-  //se não deu certo exibir mensagem de erro
-    echo  "<script>alert('Erro!);</script>". $query . "<br>" . mysqli_error($conn);
-    //header('Location: ../index.php');
+              //se deu tudo certo? exibir uma mensagem de ok
+              if (mysqli_query($conn, $query)) {
+
+                  header('Location: ../index.php');
+                  $_SESSION['mensagem'] = "Produto cadastrado com sucesso " ;
+              } else {
+                //se não deu certo exibir mensagem de erro
+                  echo  "<script>alert('Erro!);</script>". $query . "<br>" . mysqli_error($conn);
+                  //header('Location: ../index.php');
+
+              }
+           }
 
 }
